@@ -3,34 +3,59 @@
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
+    "lint-staged": "lint-staged",
+    "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
+    "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src && npm run lint:style",
+    "lint:js": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src",
+    "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
-      "prettier --write"
-    ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write"
-    ]
-  },
+  "husky": {
+   "hooks": {
+     "pre-commit": "npm run lint-staged"
+   }
+ },
+ "lint-staged": {
+   "**/*.less": "stylelint --syntax less",
+   "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
+   "**/*.{js,jsx,tsx,ts,less,md,json}": [
+     "prettier --write"
+   ]
+ },
   "dependencies": {
     "@ant-design/pro-layout": "^5.0.12",
     "@types/lodash": "^4.14.159",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.14",
-    "lint-staged": "^10.0.7",
+    "classnames": "^2.2.6",
     "lodash": "^4.17.19",
+    "memoize-one": "^5.1.1",
+    "path-to-regexp": "^6.1.0",
     "prettier": "^1.19.1",
+    "qs": "^6.9.4",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "umi": "^3.2.14",
     "umi-request": "^1.3.5",
     "yorkie": "^2.0.0"
-  }
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.10",
+    "@types/mockjs": "^1.0.3",
+    "cross-env": "^7.0.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "mockjs": "^1.1.0",
+    "stylelint": "^13.6.1"
+  },
+  "checkFiles": [
+    "src/**/*.js*",
+    "src/**/*.ts*",
+    "src/**/*.less",
+    "config/**/*.js*",
+    "scripts/**/*.js"
+  ]
 }
