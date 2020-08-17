@@ -1,8 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "start": "umi dev",
+    "start": "cross-env UMI_ENV=local umi dev",
+    "start:local": "cross-env UMI_ENV=local umi dev",
+    "start:dev": "cross-env UMI_ENV=dev umi dev",
+    "start:prod": "cross-env UMI_ENV=prod umi dev",
     "build": "umi build",
+    "build:local": "cross-env UMI_ENV=local umi build",
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
     "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src && npm run lint:style",
@@ -11,7 +15,9 @@
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
-    "test:coverage": "umi-test --coverage"
+    "test:coverage": "umi-test --coverage",
+    "predeploy:local": "cross-env UMI_ENV=local umi build",
+    "deploy:local": "cross-env UMI_ENV=local gulp sftp-deploy"
   },
   "husky": {
     "hooks": {
@@ -51,12 +57,15 @@
     "cross-env": "^7.0.2",
     "eslint": "^7.6.0",
     "eslint-plugin-react": "^7.20.6",
+    "gulp": "^4.0.2",
+    "gulp-ssh": "^0.7.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "mockjs": "^1.1.0",
     "stylelint": "^13.6.1",
     "stylelint-order": "^4.1.0",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "vinyl-ftp": "^0.6.1"
   },
   "checkFiles": [
     "src/**/*.js*",

@@ -1,0 +1,7 @@
+Last login: Fri Aug 14 16:27:54 2020 from 58.48.156.83
+
+Welcome to Alibaba Cloud Elastic Compute Service !
+
+[root@izbp11tf7dfpus0t8k5gq4z ~]# rm -rf frank/wwww/app/client/*
+[root@izbp11tf7dfpus0t8k5gq4z ~]# exit
+logout

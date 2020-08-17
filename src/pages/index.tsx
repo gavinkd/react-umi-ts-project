@@ -22,4 +22,8 @@ HomePage.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
+HomePage.defaultProps = {
+  title: '哈哈',
+};
+
 export default HomePage;
