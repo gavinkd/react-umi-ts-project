@@ -10,10 +10,8 @@ const HomePage: React.FC<HomePageType> = props => {
   const { title } = props;
   const [index] = useState<number>(1);
   return (
-    <div>
-      <h1 className={styles.title}>
-        {title}-{index}
-      </h1>
+    <div className={styles.title}>
+      {title}-{index}
     </div>
   );
 };
