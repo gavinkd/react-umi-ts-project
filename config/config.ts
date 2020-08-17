@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // https://umijs.org/zh-CN/config
 import { defineConfig } from 'umi';
-// import moment from 'moment'
+import moment from 'moment';
 import routeConfig from './router.config';
 
 function getPathConfig() {
@@ -22,7 +23,7 @@ export default defineConfig({
   },
   define: {
     // APP_TYPE: APP_TYPE || '',
-    // BUILD_DATE: moment().format('YYYYMMDDHHmm')
+    BUILD_DATE: moment().format('YYYYMMDDHHmm'),
   },
   // treeShaking: true,
   targets: {

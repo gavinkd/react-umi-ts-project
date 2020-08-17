@@ -1,3 +1,4 @@
 /gulpfile.js
 /.sshConfig.*.js
 /.ftpConfig.js
+/config/config.ts
