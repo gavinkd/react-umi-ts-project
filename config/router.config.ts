@@ -1,7 +1,14 @@
 export default [
-  { path: '/', component: '@/pages/index' },
   {
-    path: '/home',
-    component: '@/pages/Home',
+    path: '/',
+    component: '@/layout/basicLayout',
+    routes: [
+      { path: '/', redirect: '/home' },
+      {
+        path: '/home',
+        component: '@/pages/Home',
+        exact: true,
+      },
+    ],
   },
 ];

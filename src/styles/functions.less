@@ -1,0 +1,859 @@
+// declaration-block-no-duplicate-properties
+// rule-empty-line-before
+// at-rule-empty-line-before
+// declaration-empty-line-before
+// selector-pseudo-element-colon-notation
+
+/* stylelintselector-pseudo-element-colon-notation */
+
+@import './variable';
+
+/******************************* 项目常用函数 ***********************/
+
+// 盒子宽高
+.size(@w, @h) {
+  width: @w;
+  height: @h;
+}
+
+// 最小尺寸, 兼容IE6
+.min-width(@min-w) {
+  min-width: @min-w;
+  _width: @min-w;
+}
+.min-height(@min-h) {
+  min-height: @min-h;
+  _height: @min-h;
+}
+
+// 文字图片居中
+.center(text-x) {
+  text-align: center;
+}
+.center(text-y) {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+// 块级元素水平居中
+.center(auto-x) {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// 居中, 不确定尺寸, 不兼容 IE6
+.center(unknown) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.center(unknown-x) {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.center(unknown-y) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+// 居中, 确定尺寸, 兼容 IE6
+.center(known, @w, @h) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -(@w / 2);
+  margin-left: -(@h / 2);
+  .size(@w, @h);
+}
+
+// 溢出截断
+.subText() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// flex
+.flex() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+// 垂直居中
+.flex-auto {
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  .flex();
+}
+
+// 移动端扩展点击区域
+.extend-click() {
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+  }
+}
+
+// 遮罩层, 全屏遮罩、区域遮罩
+.over-screen(fixed) {
+  .fixed();
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.over-screen(absolute) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/************************ 字体 ****************************/
+// 禁止换行, 文本溢出省略号显示 (一行)
+.ellipsis() {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+// 文本溢出省略号显示 (多行)
+// 只支持 webkit 浏览器, 解决方案：高度 = 行高*行数
+// height: 90px; line-height: 30px; -webkit-line-clamp: 3;
+.ellipsis-mult(@n: 3) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @n;
+  word-break: break-all;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/************************ 图像 ****************************/
+// 用 max-width 来防止图片撑破容器
+.max-img() {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+// 2x 3x 背景图片
+.bg-image(@url) {
+  background-image: url("@url + '@2x.png'");
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    background-image: url("@url + '@3x.png'");
+  }
+}
+
+// 全屏大图背景
+.fullscreen-bg(@url) {
+  width: 100vw;
+  height: 100vh;
+  background: url(@url) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+// 滤镜: 将彩色照片显示为黑白照片
+.grayscale() {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+}
+
+/************************ 动效 ****************************/
+// 链接默认无下划线，hover后有下划线的样式
+.hover-link() {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// 将链接变成默认的文字样式
+.unstyled-link() {
+  color: inherit;
+  cursor: inherit;
+  text-decoration: inherit;
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+// 盒子阴影
+// box-shadow: 水平阴影的位置, 垂直阴影的位置, 模糊距离, 阴影的大小, 阴影的颜色, 阴影开始方向（默认是从里往外，设置inset就是从外往里）;
+// box-shadow: h-shadow v-shadow blur spread color inset;
+.box-shadow() {
+  box-shadow: 0 14px 26px 0 rgba(0, 0, 0, 0.1);
+}
+
+// 盒子 Hover
+.box-hover() {
+  // box-shadow: 0px 1px 2px 0px rgba(84, 107, 107, .4);
+  transition: all 0.2s linear;
+  &:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+.box-hover2() {
+  transition: transform 0.5s ease;
+  &:hover {
+    transform: translateX(10px);
+  }
+}
+
+// 三维闪动 bug 处理
+.transform-fix() {
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+}
+
+// Animation
+.ani(@name, @time: 1s, @ease: ease-in-out, @fillmode: forwards) {
+  animation-name: @name;
+  animation-duration: @time;
+  animation-timing-function: @ease;
+  animation-fill-mode: @fillmode;
+}
+
+/***************************** 功能 *******************************/
+
+// 浮动, 兼容 IE6
+.fl() {
+  float: left;
+  *display: inline;
+  _display: inline;
+}
+.fr() {
+  float: right;
+  *display: inline;
+  _display: inline;
+}
+
+// 清除浮动
+.clearfix() {
+  *zoom: 1;
+  &:after {
+    display: block;
+    clear: both;
+    content: '';
+    visibility: hidden;
+    height: 0;
+  }
+}
+.clearfix(table) {
+  *zoom: 1;
+  &:before,
+  &:after {
+    content: ' ';
+    display: table;
+    clear: both;
+  }
+}
+
+// 禁止文本被选择
+.user-select() {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// 隐藏鼠标手势
+.hide-cursor() {
+  cursor: none !important;
+}
+
+// 鼠标禁用样式，但仍然可以触发事件
+// <input type="text" disabled="disabled">
+.disabled() {
+  cursor: not-allowed;
+}
+
+// 禁用元素事件
+// 1. 阻止任何点击动作的执行
+// 2. 使链接显示为默认光标(cursor:default)
+// 3. 阻止触发hover和active状态
+// 4. 阻止JavaScript点击事件的触发
+.pointer-events() {
+  pointer-events: none;
+}
+
+// 模糊
+.blur(@blur: 10px) {
+  filter: blur(@blur);
+  -webkit-filter: blur(@blur);
+  -moz-filter: blur(@blur);
+  -o-filter: blur(@blur);
+  -ms-filter: blur(@blur);
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='@{blur}');
+  *zoom: 1;
+}
+
+// 透明度, 兼容 IE8
+.opacity(@opacity: 20) {
+  opacity: @opacity / 100;
+  filter: alpha(opacity= @opacity);
+}
+
+// 用伪类来显示打印时 a 标签的链接
+.print-link() {
+  @media print {
+    a[href]:after {
+      content: ' (' attr(href) ') ';
+    }
+  }
+}
+
+// 隔行换色
+.zebra-lists(odd, @color) {
+  &.odd {
+    > li:nth-child(odd) {
+      background-color: @color;
+    }
+  }
+}
+.zebra-lists(even, @color) {
+  &.even {
+    > li:nth-child(even) {
+      background: green;
+    }
+  }
+}
+
+// 首字下沉
+.first-letter(@font-size: 6em) {
+  &::first-letter {
+    float: left;
+    line-height: 1;
+    font-size: @font-size;
+  }
+}
+
+// 特殊标记段落第一行
+.first-line() {
+  &::first-line {
+    color: red;
+  }
+}
+
+// 美化选中文本
+.beauty-select() {
+  &::selection {
+    color: #fff;
+    background-color: #6bc30d;
+    text-shadow: none;
+  }
+}
+
+// 美化占位符 placeholder 样式
+.beauty-placeholder(@fz, @color: #999, @align: left) {
+  &:-moz-placeholder {
+    font-size: @fz;
+    color: @color;
+    text-align: @align;
+  }
+  &:-ms-input-placeholder {
+    font-size: @fz;
+    color: @color;
+    text-align: @align;
+  }
+  &::-webkit-input-placeholder {
+    font-size: @fz;
+    color: @color;
+    text-align: @align;
+  }
+}
+
+// 美化占位符 placeholder 样式（自定义属性和值）
+.beauty-placeholder(custom, @property, @value) {
+  &:-moz-placeholder {
+    @{property}: @value;
+  }
+  &:-ms-input-placeholder {
+    @{property}: @value;
+  }
+  &::-webkit-input-placeholder {
+    @{property}: @value;
+  }
+}
+
+/*************************  图形  **************************/
+
+// 三角形
+.triangle(@width: 4px,@color: #000) {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: middle;
+  border-top: @width solid @color;
+  border-left: @width solid transparent;
+  border-right: @width solid transparent;
+}
+
+// 三角形箭头气泡效果, IE6-7 无表现
+.arrow(top, @w: 10px, @color, @x: 50%) {
+  position: relative;
+  &:before {
+    position: absolute;
+    bottom: 100%;
+    left: @x;
+    content: ' ';
+    height: 0;
+    width: 0;
+    pointer-events: none;
+    border-style: solid;
+    border-color: transparent;
+    border-bottom-color: @color;
+    border-width: unit(@w, px);
+    @margin: -@w;
+    margin-left: unit(@margin, px);
+  }
+}
+.arrow(right, @w: 10px, @color, @y: 50%) {
+  position: relative;
+  &:before {
+    position: absolute;
+    left: 100%;
+    top: @y;
+    content: ' ';
+    height: 0;
+    width: 0;
+    pointer-events: none;
+    border-style: solid;
+    border-color: transparent;
+    border-left-color: @color;
+    border-width: unit(@w, px);
+    @margin: -@w;
+    margin-top: unit(@margin, px);
+  }
+}
+.arrow(bottom, @w: 10px, @color, @x: 50%) {
+  position: relative;
+  &:before {
+    position: absolute;
+    top: 100%;
+    left: @x;
+    content: ' ';
+    height: 0;
+    width: 0;
+    pointer-events: none;
+    border-style: solid;
+    border-color: transparent;
+    border-top-color: @color;
+    border-width: unit(@w, px);
+    @margin: -@w;
+    margin-left: unit(@margin, px);
+  }
+}
+.arrow(left, @w: 10px, @color, @y: 50%) {
+  position: relative;
+  &:before {
+    position: absolute;
+    right: 100%;
+    top: @y;
+    content: ' ';
+    height: 0;
+    width: 0;
+    pointer-events: none;
+    border-style: solid;
+    border-color: transparent;
+    border-right-color: @color;
+    border-width: unit(@w, px);
+    @margin: -@w;
+    margin-top: unit(@margin, px);
+  }
+}
+
+// 三角形箭头气泡效果, 带边框
+.arrow-with-border(top, @w: 10px, @color, @border-w: 1px, @border-color, @x: 50%) {
+  position: relative;
+  &:before,
+  &:after {
+    bottom: 100%;
+    left: @x;
+    content: ' ';
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-style: solid;
+    border-color: transparent;
+  }
+  &:after {
+    border-bottom-color: @color;
+    border-width: unit(@w, px);
+    @margin: -@w;
+    margin-left: unit(@margin, px);
+  }
+  &:before {
+    border-bottom-color: @border-color;
+    @arrbo: @w+ @border-w;
+    border-width: unit(@arrbo, px);
+    @margin-bo: -@arrbo;
+    margin-left: unit(@margin-bo, px);
+  }
+}
+
+.arrow-with-border(bottom, @w: 10px, @color, @border-w: 1px, @border-color, @x: 50%) {
+  position: relative;
+  &:before,
+  &:after {
+    top: 100%;
+    left: @x;
+    content: ' ';
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-style: solid;
+    border-color: transparent;
+  }
+  &:after {
+    border-top-color: @color;
+    border-width: unit(@w, px);
+    @margin: -@w;
+    margin-left: unit(@margin, px);
+  }
+  &:before {
+    border-top-color: @border-color;
+    @arrbo: @w+ @border-w;
+    border-width: unit(@arrbo, px);
+    @margin-bo: -@arrbo;
+    margin-left: unit(@margin-bo, px);
+  }
+}
+
+.arrow-with-border(left, @w: 10px, @color, @border-w: 1px, @border-color, @y: 50%) {
+  position: relative;
+  &:before,
+  &:after {
+    top: @y;
+    right: 100%;
+    content: ' ';
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-style: solid;
+    border-color: transparent;
+  }
+  &:after {
+    border-right-color: @color;
+    border-width: unit(@w, px);
+    @margin: -@w;
+    margin-top: unit(@margin, px);
+  }
+  &:before {
+    border-right-color: @border-color;
+    @arrbo: @w+ @border-w;
+    border-width: unit(@arrbo, px);
+    @margin-bo: -@arrbo;
+    margin-top: unit(@margin-bo, px);
+  }
+}
+
+.arrow-with-border(right, @w: 10px, @color, @border-w: 1px, @border-color, @y: 50%) {
+  position: relative;
+  &:before,
+  &:after {
+    top: @y;
+    left: 100%;
+    content: ' ';
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-style: solid;
+    border-color: transparent;
+  }
+  &:after {
+    border-left-color: @color;
+    border-width: unit(@w, px);
+    @margin: -@w;
+    margin-top: unit(@margin, px);
+  }
+  &:before {
+    border-left-color: @border-color;
+    @arrbo: @w+ @border-w;
+    border-width: unit(@arrbo, px);
+    @margin-bo: -@arrbo;
+    margin-top: unit(@margin-bo, px);
+  }
+}
+
+/**************************** 组件 *****************************/
+
+// 吸顶导航
+.fix-header(@h: 70px) {
+  .fixed();
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: @h;
+  z-index: 1000;
+  // background-color: rgba(256, 256, 256, .92);
+  // border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+  // box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+}
+
+// 吸底导航
+.fix-header(@h: 70px) {
+  .fixed();
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: @h;
+  z-index: 1000;
+}
+
+// 输入框
+.input-text() {
+  display: block;
+  width: 100%;
+  padding: 4px 8px;
+  font-size: 14px;
+  line-height: 1.42858;
+  color: #333;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+// 分割线
+// <span class="separator">|/-</span>
+.separator() {
+  margin: 0 10px;
+  color: #999;
+  font-size: 14px;
+}
+
+// 分割线 / (面包屑导航)
+.separator2() {
+  &:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: '/\00a0';
+  }
+}
+
+// <hr class="hr">
+// 支付宝：我也是有底线的
+.hr() {
+  height: 1px;
+  margin: 10px 0;
+  border: 0;
+  clear: both;
+  background-color: #e2e2e2;
+}
+
+// 改装的 fieldset
+// <fieldset><legend>返璞归真</legend></fieldset>
+.fieldset() {
+  border-color: #d2d2d2;
+  border-width: 1px 0 0;
+  border-style: solid;
+  legend {
+    padding: 0 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 300;
+  }
+}
+
+// 引用区块（模仿 Layui）
+// <div class="blockquote">Lorem ipsum dolor sit amet.</div>
+.blockquote() {
+  margin-bottom: 10px;
+  padding: 15px;
+  line-height: 22px;
+  border-left: 5px solid #009688;
+  border-radius: 0 2px 2px 0;
+  background-color: #f2f2f2;
+}
+
+// 徽章 (椭圆、小圆点)
+// <span class="badge">10</span>
+.badge(...) {
+  position: relative;
+  display: inline-block;
+  font-size: 12px;
+  color: #fff;
+  background-color: #ff5722;
+}
+.badge(ellipse) {
+  min-width: 8px;
+  height: 18px;
+  padding: 2px 6px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 9px;
+}
+.badge(dot) {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+// 关闭按钮
+// <button class="close" type="button"><span>&times;</span></button>
+.close() {
+  position: relative;
+  -webkit-appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: 0.2;
+  &:hover {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+  }
+}
+
+// 1 像素边框问题
+.onepx(...) {
+  position: relative;
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid rgba(7, 17, 27, 0.1);
+    transform: scaleY(0.5);
+  }
+}
+.onepx(top) {
+  &:after {
+    top: 0;
+  }
+}
+.onepx(bottom) {
+  &:after {
+    bottom: 0;
+  }
+}
+.onepx-easy(top, @color: #ccc) {
+  box-shadow: inset 0px -1px 1px -1px @color;
+}
+.onepx-easy(bottom, @color: #ccc) {
+  box-shadow: inset 0px 1px 1px -1px @color;
+}
+
+// 动画
+.transition(@property:all,@duration:1s,@timing-function:linear,@delay:0s) {
+  //transition:@property @duration @timing-function @delay;
+  transition: @arguments;
+  -webkit-transition: @arguments;
+  -moz-transition: @arguments;
+  -ms-transition: @arguments;
+  -o-transition: @arguments;
+}
+
+.wrap {
+  .transition(@duration:2s);
+  &:hover {
+    width: 200px;
+  }
+}
+
+.font_s(@fs:@font_size) {
+  font-size: @fs;
+}
+
+.font_style(@fc: #333, @fs: @font_size, @ff: @font_family) {
+  color: @fc;
+  font-size: @fs;
+  font-family: @ff;
+}
+
+/* 1像素 */
+.borderLine(@color:#dcdcdc,@top:auto,@right:auto,@bottom:0,@left:0) {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    left: @left;
+    bottom: @bottom;
+    right: @right;
+    top: @top;
+    height: 1px;
+    width: 100%;
+    background-color: @color;
+    display: block;
+    z-index: 15;
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+  }
+}
+
+.border-b {
+  .borderLine(@color:#dcdcdd, @top:auto, @right:auto, @bottom:0, @left:0);
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+  .border-b:after {
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+  }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 3) {
+  .border-b::after {
+    -webkit-transform: scaleY(0.33);
+    transform: scaleY(0.33);
+  }
+}
