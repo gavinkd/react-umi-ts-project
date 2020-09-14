@@ -9,6 +9,11 @@ export default [
         component: '@/pages/Home',
         exact: true,
       },
+      {
+        path: '/scroll',
+        component: '@/pages/Scroll',
+        exact: true,
+      },
     ],
   },
 ];
