@@ -1,9 +1,16 @@
 /* eslint-disable react/prop-types */
 import React, { Fragment, useState } from 'react';
 import classnames from 'classnames';
-import { ListView, PullToRefresh, ActivityIndicator, Tabs } from 'antd-mobile';
+import {
+  ListView,
+  PullToRefresh,
+  ActivityIndicator,
+  Tabs,
+  SearchBar,
+} from 'antd-mobile';
 import { ListViewProps } from 'antd-mobile/lib/list-view';
 import { Empty, Skeleton } from 'antd';
+import dayjs from 'dayjs';
 import useList from '@/components/ScrollList/hooks/useList';
 import Filter from '@/components/Filter';
 import { FilterOptionItem } from '@/components/Filter/Propstype';
@@ -34,6 +41,7 @@ const ScrollView: React.FC<ScrollViewProps> = props => {
     requestOptions,
     tabOptions,
     filterOptions,
+    searchOptions,
   } = props;
   const [filterParams, setFilterParams] = useState<Record<string, unknown>>({}); // 筛选参数
   // const pagination = useRef({page:pageOptions.page, pageSize: pageOptions.pageSize})
@@ -54,6 +62,7 @@ const ScrollView: React.FC<ScrollViewProps> = props => {
     refreshing,
     refreshHandle,
     run,
+    searchHandle,
   } = useList({
     requestHandle: requestOptions.requestHandle,
     dependent,
@@ -108,13 +117,11 @@ const ScrollView: React.FC<ScrollViewProps> = props => {
   ) => React.ReactElement<any> = (rowData, sectionID, rowID, highlightRow) => {
     const ItemComponent = getItemComponent();
     const rowProps = rowOptions?.rowProps ? rowOptions?.rowProps : {};
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     return (
       <ItemComponent
-        {...rowData}
         sectionID={sectionID}
         rowId={rowID}
+        {...rowData}
         {...rowProps}
       />
     );
@@ -177,6 +184,27 @@ const ScrollView: React.FC<ScrollViewProps> = props => {
     }
   };
 
+  const renderSearch = () => {
+    if (searchOptions) {
+      const {
+        visible,
+        requestHandle,
+        params,
+        onCancel,
+        onSubmit,
+      } = searchOptions;
+      const onSubmitHandle = (value: string) => {
+        console.log(value);
+        onSubmit(value);
+      };
+
+      if (visible) {
+        return <SearchBar onSubmit={onSubmitHandle} onCancel={onCancel} />;
+      }
+    }
+    return null;
+  };
+
   const renderBody = () => {
     if (loading) {
       return <SkeletonComponent />;
@@ -218,9 +246,11 @@ const ScrollView: React.FC<ScrollViewProps> = props => {
     [styles.container]: true,
   });
 
+  console.log(dayjs());
   return (
     <div className={cls}>
       {renderFilter()}
+      {renderSearch()}
       {renderBody()}
     </div>
   );

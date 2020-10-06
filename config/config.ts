@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // https://umijs.org/zh-CN/config
 import { defineConfig } from 'umi';
+// import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin'
 import moment from 'moment';
 import routeConfig from './router.config';
 
@@ -49,5 +50,8 @@ export default defineConfig({
       mediaQuery: false, // 允许在媒体查询中转换`px`
     }),
   ],
+  // extraBabelPlugins: [
+  //    new AntdDayjsWebpackPlugin()
+  // ],
   ...getPathConfig(),
 });

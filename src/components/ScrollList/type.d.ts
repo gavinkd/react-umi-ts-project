@@ -1,7 +1,6 @@
 import React from 'react';
 import TabData from 'rmc-tabs/lib/Models';
 import { FilterProps } from '../Filter/Propstype';
-import ex from 'umi/dist';
 
 export interface ScrollOptionsType {
   params: Record<string, unknown>;
@@ -26,6 +25,14 @@ export interface TabOption {
   onTabClick?: () => void;
 }
 
+export interface SearchOptions {
+  visible: boolean;
+  params?: Record<string, any>;
+  requestHandle?: (params: any) => Promise<any>;
+  onSubmit: (value: string) => void;
+  onCancel: () => void;
+}
+
 export interface ScrollViewProps {
   flex?: boolean;
   rowRender: (
@@ -47,4 +54,5 @@ export interface ScrollViewProps {
   filterOptions?: FilterProps;
   tabOptions?: TabOption;
   // listOptions?: ListOptions
+  searchOptions?: SearchOptions;
 }
