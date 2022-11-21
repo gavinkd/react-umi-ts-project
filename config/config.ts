@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-// https://umijs.org/zh-CN/config
 import { defineConfig } from 'umi';
-// import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin'
 import moment from 'moment';
 import routeConfig from './router.config';
 

@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { Effect, Reducer, Subscription, Action } from 'umi';
+import { Effect, Reducer, Subscription } from 'umi';
 import { getData, GetDataType } from '@/service/testService';
 import { ResponseType, PayLoadType } from '@/types/type';
 export interface GlobalState {

@@ -21,15 +21,6 @@ request.interceptors.request.use((url, options) => {
 });
 
 request.interceptors.response.use(response => {
-  const { ok, status } = response;
-  if (status !== 200) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // portalToast.error(HTTP_CODE_MESSAGE[status]);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // throw Error(HTTP_CODE_MESSAGE[status])
-  }
   return response.json();
 });
 
